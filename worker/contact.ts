@@ -65,7 +65,7 @@ async function processForm(request: Request, env: Env): Promise<Result> {
   }
 
   const token = String(form.get('cf-turnstile-response') ?? '');
-  const human = await verifyTurnstile(token, request.headers.get('CF-Connecting-IP'), env.TURNSTILE_SECRET);
+  const human = await verifyTurnstile(token, request.headers.get('CF-Connecting-IP'), env);
   if (!human) {
     return { ok: false, error: 'Die Spam-Prüfung ist fehlgeschlagen. Bitte versuchen Sie es erneut.', status: 403 };
   }
@@ -80,16 +80,50 @@ async function processForm(request: Request, env: Env): Promise<Result> {
   return { ok: true };
 }
 
-async function verifyTurnstile(token: string, ip: string | null, secret: string): Promise<boolean> {
-  if (!token || !secret) return false;
+const TURNSTILE_ACTION = 'kontakt'; // must match data-action on the widget in kontakt.astro
+
+type SiteverifyResult = {
+  success?: boolean;
+  action?: string;
+  hostname?: string;
+  'error-codes'?: string[];
+  metadata?: { result_with_testing_key?: boolean };
+};
+
+// Tokens are single-use; the page resets the widget after every attempt.
+async function verifyTurnstile(token: string, ip: string | null, env: Env): Promise<boolean> {
+  const hostnames = env.TURNSTILE_HOSTNAMES.split(',').map((h) => h.trim()).filter(Boolean);
+  if (!token || token.length > 2048 || !env.TURNSTILE_SECRET || hostnames.length === 0) return false;
+
   const body = new FormData();
-  body.append('secret', secret);
+  body.append('secret', env.TURNSTILE_SECRET);
   body.append('response', token);
   if (ip) body.append('remoteip', ip);
 
-  const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body });
-  const outcome = (await res.json()) as { success?: boolean };
-  return outcome.success === true;
+  let outcome: SiteverifyResult;
+  try {
+    const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body });
+    outcome = (await res.json()) as SiteverifyResult;
+  } catch (err) {
+    console.error('Turnstile siteverify failed', err);
+    return false;
+  }
+
+  if (outcome.success !== true) {
+    console.warn('Turnstile rejected', outcome['error-codes']);
+    return false;
+  }
+  if (!outcome.hostname || !hostnames.includes(outcome.hostname)) {
+    console.warn('Turnstile hostname not allowed', outcome.hostname);
+    return false;
+  }
+  // Cloudflare's test keys return no action; real widgets must report ours.
+  const isTestKey = outcome.metadata?.result_with_testing_key === true;
+  if (!isTestKey && outcome.action !== TURNSTILE_ACTION) {
+    console.warn('Turnstile action mismatch', outcome.action);
+    return false;
+  }
+  return true;
 }
 
 async function sendMail(env: Env, data: { name: string; email: string; subject: string; message: string }) {

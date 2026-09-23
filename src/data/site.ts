@@ -7,7 +7,7 @@ export const site = {
     "https://shop.autorenwelt.de/products/komm-dahin-wo-es-still-ist-von-vanessa-vu-und-ahmad-katlesh",
   footer:
     "© 2026  KOMM DAHIN, WO ES STILL IST | Fotos: Peter Rigaud | Gestaltung: Mohammad Katlish",
-  turnstileSiteKey: "1x00000000000000000000AA",
+  turnstileSiteKey: "0x4AAAAAAFBfDi8KpG6EUXRV",
 };
 
 export const nav = [
