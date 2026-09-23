@@ -4,46 +4,64 @@ import cover from '../assets/book-cover.jpg';
 import { book } from '../data/book';
 
 // Everything is sized from the real book's proportions; --bw (rendered width) is set in CSS.
-const ratioH = book.heightMm / book.widthMm;
-const ratioD = book.depthMm / book.widthMm;
+const vars = [
+  `--ratio-h: ${book.heightMm / book.widthMm}`,
+  `--ratio-d: ${book.depthMm / book.widthMm}`,
+  `--ratio-board: ${book.boardMm / book.widthMm}`,
+  `--ratio-squares: ${book.squaresMm / book.widthMm}`,
+  `--hinge: ${((book.hingeMm / book.widthMm) * 100).toFixed(2)}%`,
+].join('; ');
 ---
 
-<div class="book-scene" data-book style={`--ratio-h: ${ratioH}; --ratio-d: ${ratioD};`}>
+<div class="book-scene" data-book style={vars}>
   <div class="book-shadow" aria-hidden="true"></div>
-  <div class:list={['book', { 'book--gloss': book.finish === 'gloss' }]}>
-    <div class="book__face book__front">
-      <Image
-        src={cover}
-        alt="Buchcover: Vanessa Vu, Ahmad Katlesh – Komm dahin, wo es still ist. Eine Erkundung"
-        widths={[360, 540, 720, 1080]}
-        sizes="(max-width: 767px) 60vw, 380px"
-        loading="eager"
-        fetchpriority="high"
-      />
-    </div>
+  <!-- .book-enter carries the one-time entrance; .book carries the resting angle and pointer tilt -->
+  <div class="book-enter">
+    <div class:list={['book', { 'book--gloss': book.finish === 'gloss' }]}>
+      <div class="book__face book__front">
+        <Image
+          src={cover}
+          alt="Buchcover: Vanessa Vu, Ahmad Katlesh – Komm dahin, wo es still ist. Eine Erkundung"
+          widths={[360, 540, 720, 1080]}
+          sizes="(max-width: 767px) 60vw, 380px"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
 
-    <div class="book__face book__spine" aria-hidden="true">
-      {
-        book.spine ? (
-          <Image src={book.spine} alt="" width={120} />
-        ) : (
-          <div class="book__spine-print">
-            <span class="book__spine-logo">rororo</span>
-            <span class="book__spine-title">
-              <span class="book__spine-komm">Komm dahin,</span> <span class="book__spine-still">wo es still ist</span>
-            </span>
-            <span class="book__spine-authors">Vu · Katlesh</span>
-          </div>
-        )
-      }
-    </div>
+      <div class="book__face book__spine" aria-hidden="true">
+        {
+          book.spine ? (
+            <Image src={book.spine} alt="" widths={[80, 160]} sizes="60px" />
+          ) : (
+            <div class="book__spine-print">
+              <span class="book__spine-authors">Vu · Katlesh</span>
+              <span class="book__spine-title">
+                <span class="book__spine-komm">Komm dahin,</span> <span class="book__spine-still">wo es still ist</span>
+              </span>
+              <span class="book__spine-logo">rororo</span>
+            </div>
+          )
+        }
+      </div>
 
-    <div class="book__face book__back" aria-hidden="true">
-      {book.back && <Image src={book.back} alt="" width={540} />}
+      <div class="book__face book__back" aria-hidden="true">
+        {book.back && <Image src={book.back} alt="" width={540} />}
+      </div>
+
+      <!-- Edges of the two cover boards (hardcover) -->
+      <div class="book__face book__board book__board--side book__board--front" aria-hidden="true"></div>
+      <div class="book__face book__board book__board--side book__board--back" aria-hidden="true"></div>
+      <div class="book__face book__board book__board--top book__board--front" aria-hidden="true"></div>
+      <div class="book__face book__board book__board--top book__board--back" aria-hidden="true"></div>
+      <div class="book__face book__board book__board--bottom book__board--front" aria-hidden="true"></div>
+      <div class="book__face book__board book__board--bottom book__board--back" aria-hidden="true"></div>
+
+      <!-- Page block, sitting slightly inside the boards -->
+      <div class="book__face book__pages book__pages--side" aria-hidden="true"></div>
+      <div class="book__face book__pages book__pages--top" aria-hidden="true"></div>
+      <div class="book__face book__pages book__pages--bottom" aria-hidden="true"></div>
     </div>
-    <div class="book__face book__pages book__pages--side" aria-hidden="true"></div>
-    <div class="book__face book__pages book__pages--top" aria-hidden="true"></div>
-    <div class="book__face book__pages book__pages--bottom" aria-hidden="true"></div>
   </div>
 </div>
 
@@ -75,13 +93,15 @@ const ratioD = book.depthMm / book.widthMm;
 
 <style>
   .book-scene {
-    /* Rendered size of the front cover; height and depth follow the real proportions. */
+    /* Rendered size of the front cover; everything else follows the real proportions. */
     --bw: clamp(220px, 26vw, 360px);
     --bh: calc(var(--bw) * var(--ratio-h));
     --bd: calc(var(--bw) * var(--ratio-d));
-    --inset: 3px; /* page block sits slightly inside the paperback cover */
+    --board: max(3px, calc(var(--bw) * var(--ratio-board)));
+    --squares: max(3px, calc(var(--bw) * var(--ratio-squares)));
     --paper: #f6f1e7;
-    --cover-bg: #ffefe2;
+    --cover-bg: #f7ece4;
+    --board-edge: #e9dcd3;
     --tilt-x: 0deg;
     --tilt-y: 0deg;
 
@@ -91,6 +111,26 @@ const ratioD = book.depthMm / book.widthMm;
     width: 100%;
     padding-block: 24px 48px;
     perspective: 1600px;
+  }
+
+  .book-enter {
+    transform-style: preserve-3d;
+    animation: book-in 1.5s cubic-bezier(0.16, 0.84, 0.3, 1) 0.25s both;
+  }
+
+  /* The book turns into its resting angle and settles, as if set down */
+  @keyframes book-in {
+    from {
+      opacity: 0;
+      transform: translateY(28px) rotateY(-38deg) rotateX(6deg);
+    }
+    35% {
+      opacity: 1;
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
   }
 
   .book {
@@ -107,11 +147,11 @@ const ratioD = book.depthMm / book.widthMm;
     backface-visibility: hidden;
   }
 
-  /* Front cover */
+  /* ---------- Front cover ---------- */
   .book__front {
     inset: 0;
     transform: translateZ(calc(var(--bd) / 2));
-    border-radius: 0 3px 3px 0;
+    border-radius: 0 2px 2px 0;
     overflow: hidden;
     background: var(--cover-bg);
   }
@@ -122,24 +162,37 @@ const ratioD = book.depthMm / book.widthMm;
     object-fit: cover;
   }
 
-  /* Hinge shading and a soft light fall-off across the cover */
+  /* Hinge groove near the spine + soft light fall-off across the cover */
   .book__front::after {
     content: '';
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(90deg, rgb(0 0 0 / 0.18) 0, rgb(0 0 0 / 0.04) 2.5%, rgb(255 255 255 / 0.12) 4%, transparent 8%),
+      linear-gradient(
+        90deg,
+        rgb(0 0 0 / 0.12) 0,
+        rgb(0 0 0 / 0.03) 1.5%,
+        transparent calc(var(--hinge) - 1.6%),
+        rgb(0 0 0 / 0.1) calc(var(--hinge) - 0.5%),
+        rgb(0 0 0 / 0.16) var(--hinge),
+        rgb(255 255 255 / 0.35) calc(var(--hinge) + 0.6%),
+        rgb(255 255 255 / 0.08) calc(var(--hinge) + 1.8%),
+        transparent calc(var(--hinge) + 3%)
+      ),
       linear-gradient(100deg, transparent 55%, rgb(0 0 0 / 0.06));
     pointer-events: none;
   }
 
-  .book--gloss .book__front::after {
-    background:
-      linear-gradient(90deg, rgb(0 0 0 / 0.18) 0, rgb(0 0 0 / 0.04) 2.5%, rgb(255 255 255 / 0.12) 4%, transparent 8%),
-      linear-gradient(115deg, transparent 30%, rgb(255 255 255 / 0.28) 45%, transparent 60%);
+  .book--gloss .book__front::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(115deg, transparent 30%, rgb(255 255 255 / 0.28) 45%, transparent 60%);
+    pointer-events: none;
   }
 
-  /* Back cover */
+  /* ---------- Back cover ---------- */
   .book__back {
     inset: 0;
     transform: rotateY(180deg) translateZ(calc(var(--bd) / 2));
@@ -153,7 +206,7 @@ const ratioD = book.depthMm / book.widthMm;
     object-fit: cover;
   }
 
-  /* Spine (left side) */
+  /* ---------- Spine (left side), full thickness incl. boards ---------- */
   .book__spine {
     top: 0;
     left: calc((var(--bw) - var(--bd)) / 2);
@@ -161,24 +214,26 @@ const ratioD = book.depthMm / book.widthMm;
     height: var(--bh);
     transform: rotateY(-90deg) translateZ(calc(var(--bw) / 2));
     background: var(--cover-bg);
+    border-radius: 2px;
     overflow: hidden;
   }
 
+  /* Rounded-spine shading */
   .book__spine::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, rgb(0 0 0 / 0.14), rgb(0 0 0 / 0.02) 40%, rgb(0 0 0 / 0.1));
+    background: linear-gradient(90deg, rgb(0 0 0 / 0.12), rgb(255 255 255 / 0.06) 35%, rgb(0 0 0 / 0.02) 65%, rgb(0 0 0 / 0.14));
     pointer-events: none;
   }
 
   .book__spine img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: fill;
   }
 
-  /* Spine text reads bottom-to-top, as on German books */
+  /* Fallback spine (no photo): text reads bottom-to-top, as on German books */
   .book__spine-print {
     display: flex;
     align-items: center;
@@ -199,63 +254,109 @@ const ratioD = book.depthMm / book.widthMm;
 
   .book__spine-logo {
     padding: 0.35em 0.4em;
-    background: #b5a8b5;
+    background: #8d8290;
     color: #fff;
     font-size: 0.7em;
-    letter-spacing: 0.02em;
     text-transform: lowercase;
   }
 
   .book__spine-komm {
-    color: #8b7a8d;
+    color: #7e6d82;
   }
 
   .book__spine-still {
-    color: #d8b59c;
+    color: #c9a18c;
   }
 
   .book__spine-authors {
-    color: #5b4d5e;
+    color: #3f3842;
     font-size: 0.72em;
     letter-spacing: 0.08em;
   }
 
-  /* Page block: fine paper lines */
+  /* ---------- Board edges (hardcover boards are ~2.5 mm thick) ---------- */
+  .book__board {
+    background: var(--board-edge);
+  }
+
+  /* Open side (fore-edge) of each board */
+  .book__board--side {
+    top: 0;
+    left: calc((var(--bw) - var(--board)) / 2);
+    width: var(--board);
+    height: var(--bh);
+    background: linear-gradient(90deg, var(--board-edge), #f3e8e0);
+  }
+
+  .book__board--side.book__board--front {
+    transform: translateX(calc(var(--bw) / 2)) translateZ(calc(var(--bd) / 2 - var(--board) / 2)) rotateY(90deg);
+  }
+
+  .book__board--side.book__board--back {
+    transform: translateX(calc(var(--bw) / 2)) translateZ(calc(var(--board) / 2 - var(--bd) / 2)) rotateY(90deg);
+  }
+
+  /* Top and bottom edges of each board */
+  .book__board--top,
+  .book__board--bottom {
+    left: 0;
+    top: calc((var(--bh) - var(--board)) / 2);
+    width: var(--bw);
+    height: var(--board);
+  }
+
+  .book__board--top.book__board--front {
+    transform: translateY(calc(var(--bh) / -2)) translateZ(calc(var(--bd) / 2 - var(--board) / 2)) rotateX(90deg);
+  }
+
+  .book__board--top.book__board--back {
+    transform: translateY(calc(var(--bh) / -2)) translateZ(calc(var(--board) / 2 - var(--bd) / 2)) rotateX(90deg);
+  }
+
+  .book__board--bottom.book__board--front {
+    transform: translateY(calc(var(--bh) / 2)) translateZ(calc(var(--bd) / 2 - var(--board) / 2)) rotateX(-90deg);
+  }
+
+  .book__board--bottom.book__board--back {
+    transform: translateY(calc(var(--bh) / 2)) translateZ(calc(var(--board) / 2 - var(--bd) / 2)) rotateX(-90deg);
+  }
+
+  /* ---------- Page block: recessed between the boards, fine paper lines ---------- */
   .book__pages {
     background-color: var(--paper);
   }
 
   .book__pages--side {
-    top: var(--inset);
-    left: calc((var(--bw) - var(--bd)) / 2);
-    width: var(--bd);
-    height: calc(var(--bh) - 2 * var(--inset));
-    transform: rotateY(90deg) translateZ(calc(var(--bw) / 2 - var(--inset)));
+    top: var(--squares);
+    left: calc((var(--bw) - (var(--bd) - 2 * var(--board))) / 2);
+    width: calc(var(--bd) - 2 * var(--board));
+    height: calc(var(--bh) - 2 * var(--squares));
+    transform: rotateY(90deg) translateZ(calc(var(--bw) / 2 - var(--squares)));
     background-image:
-      repeating-linear-gradient(90deg, rgb(120 100 80 / 0.12) 0 1px, transparent 1px 3px),
-      linear-gradient(90deg, rgb(0 0 0 / 0.1), transparent 20%, transparent 80%, rgb(0 0 0 / 0.12));
+      repeating-linear-gradient(90deg, rgb(120 100 80 / 0.14) 0 1px, transparent 1px 2.5px),
+      linear-gradient(90deg, rgb(0 0 0 / 0.16), transparent 18%, transparent 82%, rgb(0 0 0 / 0.16));
   }
 
   .book__pages--top,
   .book__pages--bottom {
     left: 0;
-    width: calc(var(--bw) - var(--inset));
-    height: var(--bd);
-    top: calc((var(--bh) - var(--bd)) / 2);
+    width: calc(var(--bw) - var(--squares));
+    height: calc(var(--bd) - 2 * var(--board));
+    top: calc((var(--bh) - (var(--bd) - 2 * var(--board))) / 2);
     background-image:
-      repeating-linear-gradient(0deg, rgb(120 100 80 / 0.12) 0 1px, transparent 1px 3px),
-      linear-gradient(0deg, rgb(0 0 0 / 0.08), transparent 30%, transparent 70%, rgb(0 0 0 / 0.08));
+      repeating-linear-gradient(0deg, rgb(120 100 80 / 0.14) 0 1px, transparent 1px 2.5px),
+      linear-gradient(0deg, rgb(0 0 0 / 0.12), transparent 25%, transparent 75%, rgb(0 0 0 / 0.12));
   }
 
   .book__pages--top {
-    transform: rotateX(90deg) translateZ(calc(var(--bh) / 2 - var(--inset)));
+    transform: rotateX(90deg) translateZ(calc(var(--bh) / 2 - var(--squares)));
   }
 
   .book__pages--bottom {
-    transform: rotateX(-90deg) translateZ(calc(var(--bh) / 2 - var(--inset)));
+    transform: rotateX(-90deg) translateZ(calc(var(--bh) / 2 - var(--squares)));
   }
 
-  /* Soft contact shadow on the "table" */
+  /* ---------- Soft contact shadow on the "table" ---------- */
   .book-shadow {
     position: absolute;
     bottom: 26px;
@@ -266,6 +367,14 @@ const ratioD = book.depthMm / book.widthMm;
     background: radial-gradient(closest-side, rgb(36 36 35 / 0.45), transparent);
     filter: blur(8px);
     pointer-events: none;
+    animation: shadow-in 1.5s cubic-bezier(0.16, 0.84, 0.3, 1) 0.25s both;
+  }
+
+  @keyframes shadow-in {
+    from {
+      opacity: 0;
+      transform: translateX(-44%) scaleX(0.7);
+    }
   }
 
   @media (max-width: 767px) {
@@ -277,6 +386,11 @@ const ratioD = book.depthMm / book.widthMm;
   @media (prefers-reduced-motion: reduce) {
     .book {
       transition: none;
+    }
+
+    .book-enter,
+    .book-shadow {
+      animation: none;
     }
   }
 </style>

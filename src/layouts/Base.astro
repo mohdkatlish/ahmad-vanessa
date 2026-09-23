@@ -23,6 +23,7 @@ const ogImageUrl = new URL(ogImage.src, Astro.site);
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
@@ -49,6 +50,27 @@ const ogImageUrl = new URL(ogImage.src, Astro.site);
     <Footer />
   </body>
 </html>
+
+<script>
+  // Reveal .reveal elements once as they scroll into view.
+  const items = document.querySelectorAll<HTMLElement>('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+    );
+    items.forEach((el) => io.observe(el));
+  } else {
+    items.forEach((el) => el.classList.add('is-visible'));
+  }
+</script>
 
 <style>
   .skip-link {

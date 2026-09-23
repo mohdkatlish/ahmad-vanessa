@@ -7,11 +7,11 @@ import IconSoundcloud from './IconSoundcloud.astro';
 
 <section class="about" id="ueber-uns">
   <div class="container">
-    <h2 class="about__title">Über uns</h2>
+    <h2 class="about__title reveal">Über uns</h2>
     <div class="about__grid">
       {
-        authors.map((a) => (
-          <article class="about__card">
+        authors.map((a, i) => (
+          <article class="about__card reveal" style={`--delay: ${i * 0.12}s`}>
             <Image
               src={a.photo}
               alt={`Porträt von ${a.name}`}

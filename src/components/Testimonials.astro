@@ -5,18 +5,18 @@ import { site } from '../data/site';
 
 <section class="voices" id="stimmen">
   <div class="container">
-    <h2 class="section-title voices__title">Das sagen unsere Leser:innen</h2>
+    <h2 class="section-title voices__title reveal">Das sagen unsere Leser:innen</h2>
     <div class="voices__grid">
       {
-        testimonials.map((t) => (
-          <figure class="voices__card">
+        testimonials.map((t, i) => (
+          <figure class="voices__card reveal" style={`--delay: ${(i % 2) * 0.12}s`}>
             <blockquote>{t.quote}</blockquote>
             <figcaption>–– {t.author}</figcaption>
           </figure>
         ))
       }
     </div>
-    <div class="voices__cta">
+    <div class="voices__cta reveal">
       <a class="btn btn--sm" href={site.orderUrl} target="_blank" rel="noopener">Jetzt bestellen</a>
     </div>
   </div>

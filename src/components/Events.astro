@@ -4,12 +4,12 @@ import { events, eventsIntro, eventsTitle } from '../data/events';
 
 <section class="events" id="lesungen">
   <div class="container">
-    <h2 class="section-title events__title">{eventsTitle}</h2>
-    <p class="events__intro">{eventsIntro}</p>
+    <h2 class="section-title events__title reveal">{eventsTitle}</h2>
+    <p class="events__intro reveal" style="--delay: 0.1s">{eventsIntro}</p>
     <ul class="events__list">
       {
         events.map((e) => (
-          <li class="events__row">
+          <li class="events__row reveal">
             <h3 class="events__place">
               {e.date} {e.city}
             </h3>

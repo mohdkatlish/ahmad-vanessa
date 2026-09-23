@@ -7,13 +7,13 @@ import InstagramEmbed from './InstagramEmbed.astro';
   instagramPosts.length > 0 && (
     <section class="insta" id="instagram" aria-labelledby="insta-title">
       <div class="container">
-        <h2 class="section-title insta__title" id="insta-title">
+        <h2 class="section-title insta__title reveal" id="insta-title">
           Stimmen auf Instagram
         </h2>
 
         <div class="gallery" data-gallery>
-          {instagramPosts.map((post) => (
-            <div class="gallery__item">
+          {instagramPosts.map((post, i) => (
+            <div class="gallery__item reveal" style={`--delay: ${(i % 3) * 0.1}s`}>
               <InstagramEmbed post={post} />
             </div>
           ))}

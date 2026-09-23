@@ -5,11 +5,11 @@ import { media } from '../data/media';
 
 <section class="media" id="medien">
   <div class="container">
-    <h2 class="section-title">Wir in den Medien</h2>
+    <h2 class="section-title reveal">Wir in den Medien</h2>
     <ul class="media__grid">
       {
-        media.map((m) => (
-          <li class="media__card">
+        media.map((m, i) => (
+          <li class="media__card reveal" style={`--delay: ${(i % 3) * 0.1}s`}>
             <div class="media__logo">
               <Image src={m.image} alt={m.outlet} widths={[360, 540]} sizes="(max-width: 767px) 90vw, 360px" />
             </div>

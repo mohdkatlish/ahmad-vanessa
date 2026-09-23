@@ -167,3 +167,66 @@ p {
     animation: none !important;
   }
 }
+
+/* ---------- Motion ---------- */
+
+/* Soft cross-fade between pages (native cross-document view transitions; ignored by older browsers) */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.35s;
+}
+
+/* On page load: rise in, staggered with --delay */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+.enter {
+  animation: rise-in 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) var(--delay, 0s) both;
+}
+
+/* Same motion, but never fully invisible: use on the main above-the-fold text so browsers
+   register the first paint immediately (content that starts at opacity 0 doesn't count). */
+@keyframes rise-in-soft {
+  from {
+    opacity: 0.25;
+    transform: translateY(18px);
+  }
+}
+
+.enter--soft {
+  animation-name: rise-in-soft;
+}
+
+/* On scroll: hidden only when JavaScript is running (html.js), revealed by the observer in Base.astro */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.9s ease,
+    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--delay, 0s);
+}
+
+.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
