@@ -1,0 +1,28 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ahmad-vanessa",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // Static Astro output; the Worker only runs first for /api/* requests.
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/api/*"]
+  },
+
+  // Cloudflare Email Routing: MAIL_TO must be a verified destination address.
+  "send_email": [{ "name": "CONTACT_EMAIL" }],
+
+  "vars": {
+    "MAIL_FROM": "kontakt@ahmad-vanessa.com",
+    "MAIL_TO": "TODO-verified-inbox@example.com",
+    "ALLOWED_ORIGINS": "https://ahmad-vanessa.com,https://www.ahmad-vanessa.com"
+  },
+
+  "observability": { "enabled": true }
+
+  // Secret (not in this file): TURNSTILE_SECRET — set with `npx wrangler secret put TURNSTILE_SECRET`
+}

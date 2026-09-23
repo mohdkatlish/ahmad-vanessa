@@ -1,0 +1,153 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import LegalBody from '../components/LegalBody.astro';
+import LegalAddress from '../components/LegalAddress.astro';
+import { legal } from '../data/legal';
+---
+
+<Base title="Datenschutz" description="Datenschutzerklärung der Website ahmad-vanessa.com.">
+  <PageHero title="Datenschutz" />
+  <LegalBody>
+    <h2>1. Überblick</h2>
+    <p>
+      Der Schutz Ihrer persönlichen Daten ist uns wichtig. Wir selbst verwenden keine Analyse-Tools, keine Werbung und
+      setzen keine Cookies. Personenbezogene Daten werden verarbeitet, soweit dies für den Betrieb der Website, die
+      Beantwortung Ihrer Nachrichten und die Anzeige eingebetteter Instagram-Beiträge auf der Startseite erforderlich ist
+      (siehe Abschnitt 6). Im Folgenden informieren wir Sie gemäß Art. 13 der Datenschutz-Grundverordnung (DSGVO) über
+      Art, Umfang und Zweck dieser Verarbeitung.
+    </p>
+
+    <h2>2. Verantwortliche</h2>
+    <p>Verantwortlich für die Datenverarbeitung auf dieser Website sind:</p>
+    <LegalAddress />
+    <p>E-Mail: <a href={`mailto:${legal.email}`}>{legal.email}</a></p>
+    <p>Ein:e Datenschutzbeauftragte:r ist gesetzlich nicht vorgeschrieben und wurde nicht benannt.</p>
+
+    <h2>3. Hosting und Auslieferung der Website (Cloudflare)</h2>
+    <p>
+      Diese Website wird über die Infrastruktur der Cloudflare, Inc., 101 Townsend St., San Francisco, CA 94107, USA
+      (»Cloudflare«) bereitgestellt. Cloudflare betreibt ein weltweites Netz von Rechenzentren, über das die Seiten
+      schnell und geschützt vor Angriffen ausgeliefert werden.
+    </p>
+    <p>
+      Beim Aufruf der Website werden technisch notwendige Daten verarbeitet, die Ihr Browser automatisch übermittelt
+      (Server-Logfiles): IP-Adresse, Datum und Uhrzeit des Zugriffs, aufgerufene Seite bzw. Datei, übertragene
+      Datenmenge, Referrer-URL, Browsertyp und -version sowie Betriebssystem. Diese Daten sind erforderlich, um die
+      Website auszuliefern, ihre Stabilität und Sicherheit zu gewährleisten und Missbrauch (z.&nbsp;B. Angriffe) abzuwehren.
+      Eine Zusammenführung mit anderen Datenquellen oder eine Auswertung zu Marketingzwecken findet nicht statt.
+    </p>
+    <p>
+      Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO; unser berechtigtes Interesse liegt in der sicheren und
+      effizienten Bereitstellung der Website. Mit Cloudflare besteht ein Vertrag zur Auftragsverarbeitung gemäß Art. 28
+      DSGVO (Cloudflare Data Processing Addendum). Cloudflare ist unter dem EU-US Data Privacy Framework zertifiziert;
+      Datenübermittlungen in die USA erfolgen auf Grundlage des Angemessenheitsbeschlusses der EU-Kommission
+      (Art. 45 DSGVO) sowie ergänzend auf Grundlage von Standardvertragsklauseln (Art. 46 DSGVO). Weitere Informationen:
+      <a href="https://www.cloudflare.com/de-de/privacypolicy/" target="_blank" rel="noopener">Datenschutzerklärung von Cloudflare</a>.
+    </p>
+
+    <h2>4. SSL-/TLS-Verschlüsselung</h2>
+    <p>
+      Diese Website nutzt aus Sicherheitsgründen eine SSL- bzw. TLS-Verschlüsselung. Eine verschlüsselte Verbindung
+      erkennen Sie am »https://« und dem Schloss-Symbol in der Adresszeile Ihres Browsers. So können Daten, die Sie an uns
+      übermitteln, nicht von Dritten mitgelesen werden.
+    </p>
+
+    <h2 id="kontaktformular">5. Kontaktformular und Kontakt per E-Mail</h2>
+    <p>
+      Wenn Sie uns über das Kontaktformular oder per E-Mail schreiben, verarbeiten wir die von Ihnen angegebenen Daten
+      (Name, E-Mail-Adresse, Betreff, Nachricht), um Ihre Anfrage zu bearbeiten und zu beantworten. Die Angaben aus dem
+      Formular werden über einen Cloudflare Worker entgegengenommen und mit Cloudflare Email Routing als E-Mail an unser
+      Postfach zugestellt; auf der Website selbst werden sie nicht gespeichert.
+    </p>
+    <p>
+      Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, sofern Ihre Anfrage mit der Anbahnung oder Durchführung eines
+      Vertrags zusammenhängt (z.&nbsp;B. Lesungsanfragen), und im Übrigen Art. 6 Abs. 1 lit. f DSGVO; unser berechtigtes
+      Interesse liegt in der Beantwortung der an uns gerichteten Nachrichten. Ihre Daten verbleiben bei uns, bis der
+      Zweck der Speicherung entfällt (z.&nbsp;B. nach abgeschlossener Bearbeitung Ihrer Anfrage) oder Sie die Löschung
+      verlangen. Gesetzliche Aufbewahrungspflichten bleiben unberührt. Eine Weitergabe an Dritte erfolgt nicht.
+    </p>
+
+    <h3>Spam-Schutz mit Cloudflare Turnstile</h3>
+    <p>
+      Zum Schutz vor automatisierten Spam-Einsendungen nutzen wir auf der Kontaktseite Cloudflare Turnstile (Anbieter:
+      Cloudflare, Inc., s.&nbsp;o.). Turnstile prüft anhand technischer Merkmale Ihres Browsers und Ihrer Verbindung
+      (u.&nbsp;a. IP-Adresse, Browser- und Geräteinformationen), ob die Eingabe von einem Menschen stammt. Turnstile
+      verwendet keine Cookies zu Werbe- oder Trackingzwecken; die Daten werden nur für diese Prüfung genutzt.
+      Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO; unser berechtigtes Interesse liegt im Schutz des Formulars vor
+      Missbrauch. Soweit dabei Informationen auf Ihrem Endgerät gespeichert oder ausgelesen werden, ist dies für den von
+      Ihnen gewünschten Dienst (Versand des Formulars) unbedingt erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG). Weitere
+      Informationen:
+      <a href="https://www.cloudflare.com/de-de/turnstile-privacy-policy/" target="_blank" rel="noopener">Datenschutzhinweise zu Turnstile</a>.
+    </p>
+
+    <h2 id="instagram">6. Eingebettete Instagram-Beiträge</h2>
+    <p>
+      Auf der Startseite binden wir Beiträge von Leser:innen, Buchhandlungen und Veranstalter:innen ein, die auf
+      Instagram über das Buch geschrieben haben. Anbieter von Instagram ist die Meta Platforms Ireland Limited, Merrion
+      Road, Dublin 4, D04 X2K5, Irland (»Meta«).
+    </p>
+    <p>
+      Sobald Sie auf der Startseite in die Nähe des Bereichs »Stimmen auf Instagram« scrollen, lädt Ihr Browser
+      automatisch Inhalte und Skripte von Servern von Meta, um die Beiträge anzuzeigen. Dabei werden insbesondere Ihre
+      IP-Adresse, Browser- und Geräteinformationen, die aufgerufene Seite sowie ggf. bei Meta gespeicherte Cookies an Meta
+      übertragen; Meta kann dabei auch Cookies oder ähnliche Technologien auf Ihrem Endgerät einsetzen. Sind Sie bei
+      Instagram angemeldet, kann Meta den Aufruf Ihrem Konto zuordnen. Meta verarbeitet diese Daten möglicherweise auch
+      in den USA; Meta ist unter dem EU-US Data Privacy Framework zertifiziert. Auf die weitere Verarbeitung durch Meta
+      haben wir keinen Einfluss.
+    </p>
+    <p>
+      Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO; unser berechtigtes Interesse liegt darin, Rückmeldungen zum Buch
+      aus sozialen Medien anschaulich darzustellen. Für die Erhebung und Übermittlung der Daten beim Laden der Beiträge
+      sind wir und Meta gemeinsam verantwortlich (Art. 26 DSGVO); für die weitere Verarbeitung ist allein Meta
+      verantwortlich. Sie können dieser Verarbeitung widersprechen (Art. 21 DSGVO) und das Laden der Inhalte z.&nbsp;B.
+      durch einen Inhalts- oder Skriptblocker in Ihrem Browser verhindern; die Beiträge sind dann als Link zu Instagram
+      erreichbar. Weitere Informationen:
+      <a href="https://privacycenter.instagram.com/policy" target="_blank" rel="noopener">Datenschutzrichtlinie von Instagram</a>.
+    </p>
+
+    <h2>7. Schriftarten</h2>
+    <p>
+      Die auf dieser Website verwendeten Schriftarten sind lokal eingebunden und werden von unserem eigenen Server
+      geladen. Es findet keine Verbindung zu Google Fonts oder anderen externen Schriftanbietern statt.
+    </p>
+
+    <h2>8. Externe Links</h2>
+    <p>
+      Diese Website enthält Links zu Angeboten Dritter, etwa zum Buchhandel (»Jetzt bestellen«), zum Verlag, zu
+      Medienbeiträgen oder zu Social-Media-Profilen. Beim bloßen Anzeigen dieser Links werden keine Daten an die
+      jeweiligen Anbieter übertragen. Erst wenn Sie einen Link anklicken, verlassen Sie unsere Website; für die
+      Datenverarbeitung auf der verlinkten Seite ist der jeweilige Anbieter verantwortlich.
+    </p>
+
+    <h2>9. Ihre Rechte</h2>
+    <p>Sie haben gegenüber uns jederzeit folgende Rechte hinsichtlich Ihrer personenbezogenen Daten:</p>
+    <ul>
+      <li>Auskunft über die gespeicherten Daten (Art. 15 DSGVO)</li>
+      <li>Berichtigung unrichtiger Daten (Art. 16 DSGVO)</li>
+      <li>Löschung (Art. 17 DSGVO)</li>
+      <li>Einschränkung der Verarbeitung (Art. 18 DSGVO)</li>
+      <li>Datenübertragbarkeit (Art. 20 DSGVO)</li>
+      <li>Widerruf einer erteilten Einwilligung mit Wirkung für die Zukunft (Art. 7 Abs. 3 DSGVO)</li>
+    </ul>
+    <p>
+      <strong>Widerspruchsrecht (Art. 21 DSGVO):</strong> Soweit wir Daten auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO
+      verarbeiten, können Sie dieser Verarbeitung aus Gründen, die sich aus Ihrer besonderen Situation ergeben, jederzeit
+      widersprechen.
+    </p>
+    <p>
+      Zur Ausübung Ihrer Rechte genügt eine formlose Nachricht an <a href={`mailto:${legal.email}`}>{legal.email}</a>.
+      Außerdem haben Sie das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren (Art. 77 DSGVO),
+      insbesondere in dem Mitgliedstaat Ihres Aufenthaltsorts, Ihres Arbeitsplatzes oder des Orts des mutmaßlichen
+      Verstoßes.
+    </p>
+
+    <h2>10. Änderungen dieser Datenschutzerklärung</h2>
+    <p>
+      Wir passen diese Datenschutzerklärung an, wenn sich die Website oder die rechtlichen Anforderungen ändern. Es gilt
+      die jeweils hier veröffentlichte Fassung.
+    </p>
+
+    <p class="legal__meta">Stand: {legal.lastUpdated}</p>
+  </LegalBody>
+</Base>

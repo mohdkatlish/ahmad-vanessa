@@ -1,0 +1,81 @@
+---
+import { Image } from 'astro:assets';
+import { media } from '../data/media';
+---
+
+<section class="media" id="medien">
+  <div class="container">
+    <h2 class="section-title">Wir in den Medien</h2>
+    <ul class="media__grid">
+      {
+        media.map((m) => (
+          <li class="media__card">
+            <div class="media__logo">
+              <Image src={m.image} alt={m.outlet} widths={[360, 540]} sizes="(max-width: 767px) 90vw, 360px" />
+            </div>
+            <a class="btn btn--sm media__btn" href={m.url} target="_blank" rel="noopener">
+              {m.label}
+              <span class="visually-hidden"> – {m.outlet}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .media {
+    padding-block: 80px var(--section-y);
+  }
+
+  .media__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    max-width: 1106px;
+    margin: 36px 0 0;
+    padding: 0 0 0 10px;
+    list-style: none;
+  }
+
+  .media__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid var(--c-peach-text);
+    padding-bottom: 16px;
+  }
+
+  .media__logo {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .media__logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .media__btn {
+    margin-top: 16px;
+  }
+
+  @media (max-width: 900px) {
+    .media__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 560px) {
+    .media__grid {
+      grid-template-columns: 1fr;
+      padding-left: 0;
+    }
+  }
+</style>

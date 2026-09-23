@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Events from '../components/Events.astro';
+import About from '../components/About.astro';
+import Testimonials from '../components/Testimonials.astro';
+import Media from '../components/Media.astro';
+import InstagramVoices from '../components/InstagramVoices.astro';
+---
+
+<Base>
+  <Hero />
+  <!-- Anchor ids from the old WordPress site, so shared links keep working -->
+  <span id="LESUNGEN" class="legacy-anchor"></span>
+  <Events />
+  <span id="Über-uns" class="legacy-anchor"></span>
+  <About />
+  <span id="Bewertungen" class="legacy-anchor"></span>
+  <Testimonials />
+  <InstagramVoices />
+  <span id="MEDIEN" class="legacy-anchor"></span>
+  <Media />
+</Base>
+
+<style>
+  .legacy-anchor {
+    display: block;
+    height: 0;
+  }
+</style>

@@ -1,0 +1,128 @@
+---
+import { Image } from 'astro:assets';
+import { authors } from '../data/authors';
+import IconInstagram from './IconInstagram.astro';
+import IconSoundcloud from './IconSoundcloud.astro';
+---
+
+<section class="about" id="ueber-uns">
+  <div class="container">
+    <h2 class="about__title">Über uns</h2>
+    <div class="about__grid">
+      {
+        authors.map((a) => (
+          <article class="about__card">
+            <Image
+              src={a.photo}
+              alt={`Porträt von ${a.name}`}
+              widths={[400, 640, 800]}
+              sizes="(max-width: 767px) 90vw, 450px"
+              class="about__photo"
+            />
+            <h3 class="about__name">{a.name}</h3>
+            <p class="about__bio">{a.bio}</p>
+            <ul class="about__links">
+              {a.links.map((l) => (
+                <li>
+                  <a href={l.url} target="_blank" rel="noopener" aria-label={`${a.name} – ${l.label}`}>
+                    {l.kind === 'instagram' && <IconInstagram />}
+                    {l.kind === 'soundcloud' && <IconSoundcloud />}
+                    {l.kind === 'image' && <Image src={l.image} alt="" width={40} height={40} />}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    padding-block: var(--section-y);
+    background: var(--c-charcoal);
+  }
+
+  .about__title {
+    font-family: var(--f-alt);
+    font-weight: 700;
+    font-size: clamp(28px, 4vw, 40px);
+    color: var(--c-sage-muted);
+    text-transform: uppercase;
+  }
+
+  .about__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    max-width: 1106px;
+    margin-top: 32px;
+  }
+
+  .about__card {
+    display: flex;
+    flex-direction: column;
+    padding: 50px;
+    background: var(--c-sage);
+  }
+
+  .about__photo {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+
+  .about__name {
+    margin-top: 32px;
+    font-family: var(--f-alt);
+    font-weight: 700;
+    font-size: clamp(26px, 2.4vw, 32px);
+    color: var(--c-plum-dark);
+  }
+
+  .about__bio {
+    margin-top: 20px;
+    font-family: var(--f-alt);
+    font-size: 15px;
+    line-height: 1.85;
+    color: var(--c-plum-on-sage);
+  }
+
+  .about__links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin: auto 0 0;
+    padding: 40px 0 0;
+    list-style: none;
+  }
+
+  .about__links a {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    color: #000;
+    font-size: 36px;
+  }
+
+  .about__links a:hover {
+    opacity: 0.7;
+  }
+
+  .about__links img {
+    width: 40px;
+    height: 40px;
+  }
+
+  @media (max-width: 767px) {
+    .about__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .about__card {
+      padding: 24px;
+    }
+  }
+</style>

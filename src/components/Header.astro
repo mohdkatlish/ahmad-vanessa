@@ -1,0 +1,156 @@
+---
+import { nav } from '../data/site';
+---
+
+<header class="header">
+  <div class="container header__inner">
+    <button class="header__toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="visually-hidden">Menü</span>
+      <span class="header__bars" aria-hidden="true"></span>
+    </button>
+    <nav id="site-nav" class="header__nav" aria-label="Hauptnavigation">
+      <ul>
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('.header__toggle');
+  const navEl = document.getElementById('site-nav');
+  toggle?.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!open));
+    navEl?.classList.toggle('is-open', !open);
+  });
+  navEl?.querySelectorAll('a').forEach((a) =>
+    a.addEventListener('click', () => {
+      toggle?.setAttribute('aria-expanded', 'false');
+      navEl.classList.remove('is-open');
+    }),
+  );
+</script>
+
+<style>
+  .header {
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: 20;
+  }
+
+  .header__inner {
+    display: flex;
+    align-items: center;
+    min-height: 64px;
+  }
+
+  .header__nav ul {
+    display: flex;
+    gap: 34px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .header__nav a {
+    color: var(--c-nav);
+    font-size: 15px;
+    letter-spacing: 0.02em;
+    line-height: 60px;
+  }
+
+  .header__nav a:hover {
+    color: var(--c-plum-dark);
+    text-decoration: none;
+  }
+
+  .header__toggle {
+    display: none;
+  }
+
+  @media (max-width: 767px) {
+    .header__toggle {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      margin-left: auto;
+      background: none;
+      border: 0;
+      cursor: pointer;
+    }
+
+    .header__bars,
+    .header__bars::before,
+    .header__bars::after {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--c-nav);
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .header__bars {
+      position: relative;
+    }
+
+    .header__bars::before,
+    .header__bars::after {
+      content: '';
+      position: absolute;
+      left: 0;
+    }
+
+    .header__bars::before {
+      top: -7px;
+    }
+
+    .header__bars::after {
+      top: 7px;
+    }
+
+    .header__toggle[aria-expanded='true'] .header__bars {
+      background: transparent;
+    }
+
+    .header__toggle[aria-expanded='true'] .header__bars::before {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    .header__toggle[aria-expanded='true'] .header__bars::after {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    .header__nav {
+      display: none;
+      position: absolute;
+      top: 64px;
+      left: 0;
+      right: 0;
+      background: #fff;
+      box-shadow: 0 12px 24px rgb(0 0 0 / 0.08);
+    }
+
+    .header__nav.is-open {
+      display: block;
+    }
+
+    .header__nav ul {
+      flex-direction: column;
+      gap: 0;
+      padding: 8px var(--gutter) 16px;
+    }
+
+    .header__nav a {
+      display: block;
+      line-height: 48px;
+    }
+  }
+</style>

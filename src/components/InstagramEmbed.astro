@@ -1,0 +1,68 @@
+---
+import type { InstagramPost } from '../data/instagram';
+import IconInstagram from './IconInstagram.astro';
+
+interface Props {
+  post: InstagramPost;
+}
+
+const { post } = Astro.props;
+---
+
+<!--
+  Official Instagram embed markup. Instagram's embed.js (loaded by InstagramVoices) replaces the
+  blockquote with the real post. Until then — or if Instagram can't be reached — the card below shows.
+-->
+<blockquote class="instagram-media ig" data-instgrm-permalink={post.url} data-instgrm-version="14">
+  <p class="ig__handle"><IconInstagram /> @{post.handle}</p>
+  <p class="ig__date">{post.date}</p>
+  <p class="ig__excerpt">{post.excerpt}</p>
+  <a class="ig__link" href={post.url} target="_blank" rel="noopener">Beitrag auf Instagram ansehen</a>
+</blockquote>
+
+<style>
+  /* Fallback card (before embed.js has replaced the blockquote) */
+  .ig {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 280px;
+    margin: 0;
+    padding: 32px 28px;
+    background: var(--c-sage);
+  }
+
+  .ig__handle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--f-alt);
+    font-weight: 700;
+    color: var(--c-plum-dark);
+  }
+
+  .ig__date {
+    font-size: 13px;
+    color: var(--c-plum-on-sage);
+  }
+
+  .ig__excerpt {
+    flex: 1;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--c-plum-on-sage);
+  }
+
+  .ig__link {
+    font-size: 14px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* The iframe Instagram swaps in */
+  :global(iframe.instagram-media) {
+    min-width: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+</style>

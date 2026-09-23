@@ -1,0 +1,45 @@
+---
+import { site } from '../data/site';
+---
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <p>{site.footer}</p>
+    <nav class="footer__links" aria-label="Rechtliches">
+      <a href="/kontakt/">Kontakt</a>
+      <a href="/impressum/">Impressum</a>
+      <a href="/datenschutz/">Datenschutz</a>
+    </nav>
+    <a class="btn btn--sm footer__cta" href={site.orderUrl} target="_blank" rel="noopener">Jetzt bestellen</a>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    padding-block: 48px;
+    color: var(--c-ink);
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  .footer__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px 32px;
+  }
+
+  .footer p {
+    white-space: pre-wrap;
+  }
+
+  .footer__links {
+    display: flex;
+    gap: 20px;
+  }
+
+  .footer__links a {
+    color: var(--c-ink);
+  }
+</style>

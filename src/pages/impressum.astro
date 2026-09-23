@@ -1,0 +1,81 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import LegalBody from '../components/LegalBody.astro';
+import LegalAddress from '../components/LegalAddress.astro';
+import { legal } from '../data/legal';
+---
+
+<Base title="Impressum" description="Impressum der Website ahmad-vanessa.com.">
+  <PageHero title="Impressum" />
+  <LegalBody>
+    <h2>Angaben gemäß § 5 DDG</h2>
+    <LegalAddress />
+
+    <h3>Kontakt</h3>
+    <p>
+      E-Mail: <a href={`mailto:${legal.email}`}>{legal.email}</a>
+      {
+        legal.phone && (
+          <>
+            <br />
+            Telefon: {legal.phone}
+          </>
+        )
+      }
+    </p>
+
+    <h3>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h3>
+    <p>{legal.editorialResponsible}</p>
+
+    <h2>Verbraucherstreitbeilegung</h2>
+    <p>
+      Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer
+      Verbraucherschlichtungsstelle teilzunehmen.
+    </p>
+
+    <h2>Haftung für Inhalte</h2>
+    <p>
+      Die Inhalte dieser Website wurden mit größtmöglicher Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und
+      Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Als Diensteanbieter sind wir gemäß § 7 Abs. 1 DDG
+      für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 DDG sind wir
+      jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu
+      forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung der Nutzung
+      von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch
+      erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden entsprechender
+      Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.
+    </p>
+
+    <h2>Haftung für Links</h2>
+    <p>
+      Diese Website enthält Links zu externen Websites Dritter (z.&nbsp;B. Verlag, Buchhandel, Medien, Veranstalter), auf
+      deren Inhalte wir keinen Einfluss haben. Für diese fremden Inhalte übernehmen wir daher keine Gewähr. Für die Inhalte
+      der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber verantwortlich. Die verlinkten Seiten wurden zum
+      Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft; rechtswidrige Inhalte waren zu diesem Zeitpunkt
+      nicht erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist ohne konkrete Anhaltspunkte einer
+      Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend
+      entfernen.
+    </p>
+
+    <h2>Urheberrecht</h2>
+    <p>
+      Die Texte, Bilder und Gestaltung dieser Website unterliegen dem deutschen Urheberrecht. Vervielfältigung,
+      Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechts bedürfen der
+      schriftlichen Zustimmung der jeweiligen Urheber:innen. Soweit Inhalte nicht von uns erstellt wurden, werden die
+      Urheberrechte Dritter beachtet und entsprechend gekennzeichnet. Sollten Sie trotzdem auf eine
+      Urheberrechtsverletzung aufmerksam werden, bitten wir um einen entsprechenden Hinweis.
+    </p>
+
+    <h3>Bildnachweise</h3>
+    <ul>
+      <li>Porträtfotos: Peter Rigaud</li>
+      <li>Buchcover: Rowohlt Verlag</li>
+      <li>Logos und Vorschaubilder im Bereich »Wir in den Medien«: die jeweiligen Medienhäuser</li>
+    </ul>
+
+    <h3>Gestaltung</h3>
+    <p>Mohammad Katlish</p>
+
+    <p class="legal__meta">Stand: {legal.lastUpdated}</p>
+  </LegalBody>
+</Base>

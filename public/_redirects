@@ -1,0 +1,10 @@
+# Old WordPress URLs
+/home/            /                301
+/home/feed/       /                301
+/feed/            /                301
+/comments/feed/   /                301
+/hello-world/     /                301
+/test-2/          /                301
+/wp-login.php     /                301
+/kontakt          /kontakt/        301
+/wp-admin/*       /                301

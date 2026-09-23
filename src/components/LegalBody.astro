@@ -1,0 +1,64 @@
+---
+// Readable long-form layout for Impressum and Datenschutzerklärung.
+---
+
+<div class="container legal prose-links">
+  <slot />
+</div>
+
+<style>
+  .legal {
+    max-width: calc(760px + 2 * var(--gutter));
+    padding-block: 80px var(--section-y);
+    color: var(--c-ink);
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  .legal :global(h2) {
+    margin: 56px 0 16px;
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: clamp(24px, 3vw, 30px);
+    color: var(--c-plum-dark);
+  }
+
+  .legal :global(h2:first-child) {
+    margin-top: 0;
+  }
+
+  .legal :global(h3) {
+    margin: 32px 0 8px;
+    font-family: var(--f-alt);
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--c-plum-dark);
+  }
+
+  .legal :global(p),
+  .legal :global(ul),
+  .legal :global(address) {
+    margin: 0 0 14px;
+    font-style: normal;
+  }
+
+  .legal :global(ul) {
+    padding-left: 22px;
+  }
+
+  .legal :global(a) {
+    overflow-wrap: anywhere;
+  }
+
+  .legal :global(.legal__todo) {
+    background: #fff3cd;
+    color: #7a5a00;
+    padding: 0 4px;
+  }
+
+  .legal :global(.legal__meta) {
+    margin-top: 56px;
+    font-size: 14px;
+    color: var(--c-plum);
+  }
+</style>

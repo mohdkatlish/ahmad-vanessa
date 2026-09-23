@@ -1,0 +1,213 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { site } from '../data/site';
+
+const material = [
+  { label: 'Verlagstext zum Buch', url: 'https://www.rowohlt.de/buch/vanessa-vu-ahmad-katlesh-komm-dahin-wo-es-still-ist-9783499014970' },
+  { label: 'Download Buchcover', url: 'https://pondus-hpg.s3.eu-central-1.amazonaws.com/rowohlt/public/9783499014970.jpg' },
+  { label: 'Download Fotos (Credits in Dateinamen)', url: 'https://drive.google.com/drive/folders/1tsqeeZAihvFf2EJsW6PFsmaUsK1tm3Hu' },
+];
+---
+
+<Base title="Kontakt" description="Kontakt, Anfragen für Lesungen und Pressematerial zu »Komm dahin, wo es still ist«.">
+  <PageHero title="Kontakt" />
+
+  <div class="container contact">
+    <section>
+      <h2 class="section-title contact__title">Anfragen</h2>
+      <p>
+        Lesungen &amp; Veranstaltungen<br />
+        Tessa Martin, <a href="mailto:tessa.martin@rowohlt.de">tessa.martin@rowohlt.de</a>
+      </p>
+    </section>
+
+    <section>
+      <h2 class="section-title contact__title">Material</h2>
+      <ul class="contact__list prose-links">
+        {
+          material.map((m) => (
+            <li>
+              <a href={m.url} target="_blank" rel="noopener">
+                {m.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section id="formular">
+      <h2 class="section-title contact__title">Feedback</h2>
+      <form class="form" method="post" action="/api/contact" data-contact-form>
+        <label class="form__field">
+          Ihr Name
+          <input type="text" name="name" autocomplete="name" maxlength="400" required />
+        </label>
+        <label class="form__field">
+          Ihre E-Mail
+          <input type="email" name="email" autocomplete="email" maxlength="400" required />
+        </label>
+        <label class="form__field">
+          Betreff
+          <input type="text" name="subject" maxlength="400" required />
+        </label>
+        <label class="form__field">
+          Ihre Nachricht
+          <textarea name="message" rows="8" maxlength="2000" required></textarea>
+        </label>
+
+        <!-- Honeypot: hidden from people, filled by bots -->
+        <div class="form__hp" aria-hidden="true">
+          <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+        </div>
+
+        <div class="cf-turnstile" data-sitekey={site.turnstileSiteKey} data-language="de"></div>
+
+        <p class="form__note">
+          Ihre Angaben verwenden wir nur, um Ihre Nachricht zu beantworten. Mehr dazu in der{' '}
+          <a href="/datenschutz/#kontaktformular">Datenschutzerklärung</a>.
+        </p>
+
+        <p class="form__status" role="status" aria-live="polite" data-status hidden></p>
+
+        <button class="btn form__submit" type="submit">Absenden</button>
+      </form>
+    </section>
+  </div>
+</Base>
+
+<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+  const status = form?.querySelector<HTMLElement>('[data-status]');
+
+  const show = (text: string, kind: 'ok' | 'error') => {
+    if (!status) return;
+    status.textContent = text;
+    status.dataset.kind = kind;
+    status.hidden = false;
+  };
+
+  if (new URLSearchParams(location.search).has('fehler')) {
+    show('Die Nachricht konnte nicht gesendet werden. Bitte prüfen Sie Ihre Angaben und versuchen Sie es erneut.', 'error');
+  }
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    if (button) button.disabled = true;
+
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' },
+      });
+      const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
+      if (res.ok && data.ok) {
+        form.reset();
+        show('Danke für Ihre Nachricht! Wir melden uns so bald wie möglich.', 'ok');
+      } else {
+        show(data.error ?? 'Die Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es erneut.', 'error');
+      }
+    } catch {
+      show('Keine Verbindung. Bitte versuchen Sie es später erneut.', 'error');
+    } finally {
+      (window as any).turnstile?.reset();
+      if (button) button.disabled = false;
+    }
+  });
+</script>
+
+<style>
+  .contact {
+    display: grid;
+    gap: 80px;
+    padding-block: 100px var(--section-y);
+  }
+
+  .contact__title {
+    margin-bottom: 36px;
+    text-transform: uppercase;
+  }
+
+  .contact p,
+  .contact__list {
+    padding-left: 10px;
+    font-size: 15px;
+    line-height: 1.9;
+  }
+
+  .contact__list {
+    margin: 0;
+    list-style: none;
+  }
+
+  .form {
+    display: grid;
+    gap: 20px;
+  }
+
+  .form__field {
+    display: grid;
+    gap: 10px;
+    padding: 16px 20px 20px;
+    background: var(--c-form);
+    color: #fff;
+    font-size: 15px;
+    box-shadow: 0 0 20px rgb(130 112 133 / 0.12);
+  }
+
+  .form__field input,
+  .form__field textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 6px;
+    background: #f2f2f2;
+    font: inherit;
+    color: var(--c-ink);
+  }
+
+  .form__hp {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .contact .form__note {
+    padding-left: 0;
+    font-size: 14px;
+  }
+
+  .contact .form__status {
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 15px;
+  }
+
+  .form__status[data-kind='ok'] {
+    background: var(--c-sage);
+    color: var(--c-plum-dark);
+  }
+
+  .form__status[data-kind='error'] {
+    background: #fbe9e7;
+    color: #8a2c1d;
+  }
+
+  .form__submit {
+    justify-self: start;
+    border: 0;
+    cursor: pointer;
+  }
+
+  .form__submit:disabled {
+    opacity: 0.6;
+    cursor: wait;
+  }
+</style>

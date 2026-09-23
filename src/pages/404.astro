@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+---
+
+<Base title="Seite nicht gefunden">
+  <meta slot="head" name="robots" content="noindex" />
+  <PageHero title="404" />
+  <div class="container notfound">
+    <p>Diese Seite gibt es leider nicht (mehr).</p>
+    <a class="btn" href="/">Zur Startseite</a>
+  </div>
+</Base>
+
+<style>
+  .notfound {
+    display: grid;
+    justify-items: start;
+    gap: 32px;
+    padding-block: 100px var(--section-y);
+    font-size: 17px;
+  }
+</style>

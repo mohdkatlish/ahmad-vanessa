@@ -1,0 +1,129 @@
+---
+import { instagramPosts } from '../data/instagram';
+import InstagramEmbed from './InstagramEmbed.astro';
+---
+
+{
+  instagramPosts.length > 0 && (
+    <section class="insta" id="instagram" aria-labelledby="insta-title">
+      <div class="container">
+        <h2 class="section-title insta__title" id="insta-title">
+          Stimmen auf Instagram
+        </h2>
+
+        <div class="gallery" data-gallery>
+          {instagramPosts.map((post) => (
+            <div class="gallery__item">
+              <InstagramEmbed post={post} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<script>
+  // Masonry: sort the posts into columns (round-robin, keeps reading order across the top row).
+  // Runs before Instagram loads, so iframes are never moved (moving an iframe reloads it).
+  const gallery = document.querySelector<HTMLElement>('[data-gallery]');
+  const columnCount = () => (matchMedia('(max-width: 560px)').matches ? 1 : matchMedia('(max-width: 900px)').matches ? 2 : 3);
+
+  function layout() {
+    if (!gallery) return;
+    const cols = columnCount();
+    if (gallery.dataset.cols === String(cols)) return;
+    const items = [...gallery.querySelectorAll<HTMLElement>('.gallery__item')].sort(
+      (a, b) => Number(a.dataset.index) - Number(b.dataset.index),
+    );
+    const columns = Array.from({ length: cols }, () => {
+      const col = document.createElement('div');
+      col.className = 'gallery__col';
+      return col;
+    });
+    items.forEach((item, i) => columns[i % cols].append(item));
+    gallery.replaceChildren(...columns);
+    gallery.dataset.cols = String(cols);
+  }
+
+  gallery?.querySelectorAll<HTMLElement>('.gallery__item').forEach((item, i) => (item.dataset.index = String(i)));
+  layout();
+  let resizeTimer = 0;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(layout, 200);
+  });
+
+  // Load Instagram's embed script once the section is close to the viewport (keeps the first page load fast).
+  const section = document.getElementById('instagram');
+  if (section) {
+    const loadEmbeds = () => {
+      const s = document.createElement('script');
+      s.src = 'https://www.instagram.com/embed.js';
+      s.async = true;
+      s.onload = () => (window as any).instgrm?.Embeds.process();
+      document.body.append(s);
+    };
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) {
+            io.disconnect();
+            loadEmbeds();
+          }
+        },
+        { rootMargin: '800px 0px' },
+      );
+      io.observe(section);
+    } else {
+      loadEmbeds();
+    }
+  }
+</script>
+
+<style>
+  .insta {
+    padding-block: 40px var(--section-y);
+  }
+
+  .insta__title {
+    padding-inline: 10px;
+  }
+
+  /* Masonry: posts of different heights stack tightly in columns (columns are built by the script;
+     without JavaScript this falls back to a normal top-aligned grid). */
+  .gallery {
+    --cols: 3;
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    gap: 20px;
+    align-items: start;
+    max-width: 1106px;
+    margin-top: 40px;
+  }
+
+  .gallery :global(.gallery__col) {
+    display: grid;
+    gap: 20px;
+    align-content: start;
+    min-width: 0;
+  }
+
+  .gallery__item {
+    min-width: 0;
+  }
+
+  @media (max-width: 900px) {
+    .gallery {
+      --cols: 2;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .gallery {
+      --cols: 1;
+      max-width: 420px;
+      margin-inline: auto;
+    }
+  }
+</style>

@@ -1,0 +1,17 @@
+---
+import { legal } from '../data/legal';
+
+const line = (v: string) => ({ text: v, todo: v.startsWith('TODO') });
+const lines = [line(legal.operators.join(' und ')), line(legal.street), line(legal.city), line(legal.country)];
+---
+
+<address>
+  {
+    lines.map((l) => (
+      <>
+        <span class:list={{ legal__todo: l.todo }}>{l.text}</span>
+        <br />
+      </>
+    ))
+  }
+</address>

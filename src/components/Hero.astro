@@ -1,0 +1,103 @@
+---
+import Book3D from './Book3D.astro';
+import { site, intro } from '../data/site';
+---
+
+<section class="hero" id="start">
+  <div class="container hero__inner">
+    <div class="hero__text">
+      <p class="hero__eyebrow">{site.authors}</p>
+      <h1 class="hero__title">Komm dahin,<br />wo es still ist</h1>
+      <p class="hero__intro">{intro}</p>
+      <a class="btn hero__cta" href={site.orderUrl} target="_blank" rel="noopener">Jetzt bestellen</a>
+    </div>
+    <div class="hero__media">
+      <Book3D />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Split-colour panel behind the cover, bleeding to the right viewport edge */
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 60%;
+    right: 0;
+    background: linear-gradient(to bottom, var(--c-stone) 0 46%, var(--c-mauve) 46% 100%);
+  }
+
+  .hero__inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 410px);
+    gap: clamp(32px, 6vw, 96px);
+    align-items: center;
+    min-height: 900px;
+    padding-block: 110px 80px;
+  }
+
+  .hero__eyebrow {
+    font-family: var(--f-alt);
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--c-peach-ink);
+    text-transform: uppercase;
+  }
+
+  .hero__title {
+    margin-top: 48px;
+    font-family: var(--f-body);
+    font-weight: 600;
+    font-size: clamp(40px, 4.6vw, 66px);
+    line-height: 1.02;
+    color: var(--c-plum);
+    text-transform: uppercase;
+  }
+
+  .hero__intro {
+    max-width: 540px;
+    margin-top: 48px;
+    font-family: var(--f-alt);
+    font-size: clamp(17px, 1.4vw, 20px);
+    line-height: 1.5;
+    color: var(--c-ink);
+  }
+
+  .hero__cta {
+    margin-top: 56px;
+  }
+
+  @media (max-width: 767px) {
+    .hero::before {
+      top: auto;
+      left: 0;
+      height: 320px;
+    }
+
+    .hero__inner {
+      grid-template-columns: 1fr;
+      min-height: 0;
+      padding-block: 96px 56px;
+      gap: 48px;
+    }
+
+    .hero__title,
+    .hero__intro,
+    .hero__cta {
+      margin-top: 28px;
+    }
+
+    .hero__media {
+      width: 100%;
+    }
+  }
+</style>
