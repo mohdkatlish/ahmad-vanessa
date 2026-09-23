@@ -2,7 +2,7 @@
 export const eventsTitle = 'LESUNGEN 2024 – WIR WAREN DA';
 
 export const eventsIntro =
-  'Im Herbst 2024 waren wir mit dem Buch in 13 Städten zu Gast. Danke an alle Gastgeber:innen und an alle, die gekommen sind.';
+  "";
 
 export const events = [
   { date: '29.08.', city: 'Erfurt', venue: 'Nilo’s Café' },

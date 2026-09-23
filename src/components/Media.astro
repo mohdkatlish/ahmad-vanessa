@@ -9,7 +9,7 @@ import { media } from '../data/media';
     <ul class="media__grid">
       {
         media.map((m, i) => (
-          <li class="media__card reveal" style={`--delay: ${(i % 3) * 0.1}s`}>
+          <li class="media__card reveal" style={`--delay: ${(i % 4) * 0.1}s`}>
             <div class="media__logo">
               <Image src={m.image} alt={m.outlet} widths={[360, 540]} sizes="(max-width: 767px) 90vw, 360px" />
             </div>
@@ -31,7 +31,7 @@ import { media } from '../data/media';
 
   .media__grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 20px;
     max-width: 1106px;
     margin: 36px 0 0;

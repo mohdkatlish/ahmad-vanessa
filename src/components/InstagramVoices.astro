@@ -84,6 +84,7 @@ import InstagramEmbed from './InstagramEmbed.astro';
 <style>
   .insta {
     padding-block: 40px var(--section-y);
+    overflow-x: clip;
   }
 
   .insta__title {
@@ -109,8 +110,12 @@ import InstagramEmbed from './InstagramEmbed.astro';
     min-width: 0;
   }
 
+  /* Containing block for Instagram's iframe: while loading, Instagram positions it absolutely
+     at 100% width, which would otherwise stretch it to the page width. */
   .gallery__item {
+    position: relative;
     min-width: 0;
+    overflow: hidden;
   }
 
   @media (max-width: 900px) {

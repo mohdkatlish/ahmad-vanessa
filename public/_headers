@@ -1,0 +1,11 @@
+# Response headers for the static site (Cloudflare Workers static assets).
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+
+# Fingerprinted build files never change — cache them for a year.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable

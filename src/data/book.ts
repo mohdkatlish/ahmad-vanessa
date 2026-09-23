@@ -12,7 +12,7 @@ export const book: {
   boardMm: number;
   /** How far the pages sit inside the boards (top, bottom and open side). */
   squaresMm: number;
-  /** Distance of the hinge groove on the front cover from the spine. */
+  /** Distance of the hinge groove on the front cover from the spine (kept left of the rororo box, which starts at ~6.5 mm). */
   hingeMm: number;
   finish: 'matte' | 'gloss';
   /** Straight-on photo of the spine, upright, text reading bottom-to-top. */
@@ -24,8 +24,8 @@ export const book: {
   heightMm: 190,
   depthMm: 21,
   boardMm: 2.5,
-  squaresMm: 3,
-  hingeMm: 9,
+  squaresMm: 0.8,
+  hingeMm: 3.5,
   finish: 'matte',
   spine,
 };
